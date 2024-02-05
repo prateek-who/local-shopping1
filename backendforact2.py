@@ -25,6 +25,36 @@ class Backend:
         else:
             return False
 
+    def insert_user_complete(self, usr, pas, img_data):
+        database = "creds"
+        collection = self.db[database]
+
+        collection.insert_one({"User": {
+            "Username": usr,
+            "Password": pas,
+            "Image_data": img_data}
+        })
+
+    def insert_user_img(self, name, img_data):
+        database = "creds"
+        collection = self.db[database]
+
+        collection.update_one({"User.Username": name}, {"$set": {"User.Image_data": img_data}})
+
+    def ask_profile_image(self, name):
+        database = "creds"
+        collection = self.db[database]
+
+        user_data = collection.find_one({"User.Username": name})
+        if user_data:
+            username = name
+            address = user_data.get('User', {}).get("Address")
+            contact = user_data.get('User', {}).get("Contact_no")
+            image = user_data.get('User', {}).get("Image_data")
+            return username, address, contact, image
+        else:
+            return False
+
     def item_list(self, item_to_check):
         database = "Items_list"
         collection = self.db[database]
@@ -36,8 +66,3 @@ class Backend:
         database = "Items_list"
         collection = self.db[database]
         collection.insert_many(ins_dict)
-
-
-if __name__ == '__main__':
-    b = Backend()
-    
