@@ -40,9 +40,4 @@ class Backend:
 
 if __name__ == '__main__':
     b = Backend()
-    # rezz, myid = b.login_check("Arvind", "rat")
-    # print(myid)
-    # --------------------------------------------------------------------------------
-    # iserting = [{"blush": 789}, {"foundation": 225}, {"mascara": 299}, {"perfume": 999}]
-    # b.inserting_item(iserting)
-    # print(b.item_list("grapes"))
+    
