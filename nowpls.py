@@ -1,9 +1,11 @@
+import io
 import customtkinter as ct
 import tkinter as tk
 from PIL import Image as Im
 import backendforact2 as bk
 import time
 
+what_is_your_name = ["Name", "Address", "Contact_no", "image", "order_history"]
 
 class App(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -62,6 +64,16 @@ class App(ct.CTk):
         check, name = mybackend.login_check(username, password)
         if check:
             self.destroy()
+            self.really(True, name)
+
+    def really(self, cond, name):
+        if cond:
+            a, b, c, d = mybackend.ask_profile_image(name)
+            what_is_your_name[0] = a
+            what_is_your_name[1] = b
+            what_is_your_name[2] = c
+            what_is_your_name[3] = d
+            print(what_is_your_name)
             main = Main()
             main.mainloop()
 
@@ -93,7 +105,7 @@ class Main(ct.CTk):
         left_frame_top.place(relx=0.108, rely=0.09, anchor=tk.CENTER)
 
         # Middle frame
-        midframe = ct.CTkFrame(master=self, width=930, height=542, fg_color="#FFFFFF", corner_radius=10,
+        midframe = ct.CTkFrame(master=self, width=930, height=542, fg_color="#FF12FF", corner_radius=10,
                                bg_color="#000000")
         midframe.place(relx=0.607, rely=0.537, anchor=tk.CENTER)
 
@@ -101,10 +113,63 @@ class Main(ct.CTk):
         wid = 249
         hei = 100
         prof_bg_img = ct.CTkImage(Im.open("images\\image.png"), size=(wid, hei))
-        prof_fg_img = ct.CTkImage(Im.open("images\\ast.jpg"), size=(65, 65))
+        binary_image = what_is_your_name[3]
+        image_stream = io.BytesIO(binary_image)
+        prof_fg_img = ct.CTkImage(Im.open(image_stream), size=(65, 65))
         my_profile_bg = ct.CTkLabel(master=left_frame_top, width=wid, height=hei, corner_radius=10, image=prof_bg_img,
                                     text="")
         my_profile_bg.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+
+        def my_profile():
+            if hasattr(self, 'profile_frame') and self.profile_frame.winfo_exists():
+                self.profile_frame.destroy()
+            
+            profile_frame = ct.CTkFrame(master=self, width=930, height=542, fg_color="#000000", corner_radius=10,
+                                        bg_color="#000000")
+            profile_frame.place(relx=0.607, rely=0.537, anchor=tk.CENTER)
+
+            big_pic = ct.CTkImage(Im.open(image_stream), size=(200, 200))
+            big_image_label = ct.CTkLabel(master=profile_frame, width=200, height=200, text="", image=big_pic)
+            big_image_label.place(relx=0.15, rely=0.25, anchor=tk.CENTER)
+
+            cool_name_label = ct.CTkLabel(master=profile_frame, width=100, height=50, text=what_is_your_name[0],
+                                          font=("Courier", 96))
+            cool_name_label.place(relx=0.6, rely=0.27, anchor=tk.CENTER)
+
+            small_name_label = ct.CTkLabel(master=profile_frame, width=100, height=50, text="Name:", justify="center",
+                                          font=("Courier", 36))
+            small_name_label.place(relx=0.12, rely=0.6, anchor=tk.CENTER)
+            actual_name_label = ct.CTkLabel(master=profile_frame, width=300, height=50, text=what_is_your_name[0],
+                                            anchor="w", font=("Courier", 36))
+            actual_name_label.place(relx=0.35, rely=0.6, anchor=tk.CENTER)
+            small_address_label = ct.CTkLabel(master=profile_frame, width=100, height=50,
+                                              text="Address:", justify="center", font=("Courier", 32))
+            small_address_label.place(relx=0.14, rely=0.7, anchor=tk.CENTER)
+            actual_address_label = ct.CTkLabel(master=profile_frame, width=300, height=50, fg_color="#000000",
+                                               text=what_is_your_name[1], font=("Courier", 32), anchor="w")
+            actual_address_label.place(relx=0.39, rely=0.7, anchor=tk.CENTER)
+            small_contact_label = ct.CTkLabel(master=profile_frame, width=100, height=50,
+                                              text="Contact No:", justify="center",
+                                              font=("Courier", 32))
+            small_contact_label.place(relx=0.17, rely=0.8, anchor=tk.CENTER)
+            actual_contact_label = ct.CTkLabel(master=profile_frame, width=100, height=50,
+                                              text=what_is_your_name[2],
+                                              font=("Courier", 32), anchor="w",)
+            actual_contact_label.place(relx=0.39, rely=0.8, anchor=tk.CENTER)
+
+
+        my_profile_fg = ct.CTkButton(master=my_profile_bg, width=65, height=65, corner_radius=0, image=prof_fg_img,
+                                     text="", border_spacing=0, border_width=0, fg_color="#000000",
+                                     hover_color="#4555AC", command=my_profile)
+        my_profile_fg.place(relx=0.2, rely=0.55, anchor=tk.CENTER)
+        # my_profile_fg.configure(image=prof_fg_img)
+
+        # Left_bot frame stuff
+        the_background_grey = "#000000"
+        left_frame_bot = ct.CTkFrame(master=bottom_frame, width=250, height=487, corner_radius=0,
+                                     fg_color=the_background_grey)
+        left_frame_bot.place(relx=0.108, rely=0.586, anchor=tk.CENTER)
 
         # Add to cart, call this everywhere
         def add_to_cart(frame_name):
@@ -238,25 +303,6 @@ class Main(ct.CTk):
             print(info_dict)
 
 
-
-        def my_profile():
-            profile_frame = ct.CTkFrame(master=self, width=930, height=542, fg_color="#000000", corner_radius=10,
-                                        bg_color="#000000")
-            profile_frame.place(relx=0.607, rely=0.537, anchor=tk.CENTER)
-
-            # Profile stuff
-
-        my_profile_fg = ct.CTkButton(master=my_profile_bg, width=65, height=65, corner_radius=0, image=prof_fg_img,
-                                     text="", border_spacing=0, border_width=0, fg_color="#000000",
-                                     hover_color="#4555AC", command=my_profile)
-        my_profile_fg.place(relx=0.2, rely=0.55, anchor=tk.CENTER)
-
-        # Left_bot frame stuff
-        the_background_grey = "#000000"
-        left_frame_bot = ct.CTkFrame(master=bottom_frame, width=250, height=487, corner_radius=0,
-                                     fg_color=the_background_grey)
-        left_frame_bot.place(relx=0.108, rely=0.586, anchor=tk.CENTER)
-
         # Fruits & Vegetables side stuff
         def fruveg():
             if hasattr(self, 'fru_frame') and self.fru_frame.winfo_exists():
@@ -374,232 +420,6 @@ class Main(ct.CTk):
                 text_box_placement_x += 0.19
 
             add_to_cart("fru_veg")
-            # -----------------------------------------------------------------------
-            # self.current_num_mango = 0
-            # def mango_onclickminus():
-            #     if self.current_num_mango > 0:
-            #         self.current_num_mango -= 1
-            #         self.mango_quantity.configure(state="normal")
-            #         self.mango_quantity.delete(0, "end")
-            #         self.mango_quantity.insert(0, self.current_num_mango)
-            #         self.mango_quantity.configure(state="disabled")
-            #         if self.current_num_mango == 0:
-            #             self.mango_quantity.configure(state="normal")
-            #             self.mango_quantity.delete(0, "end")
-            #             self.mango_quantity.configure(state="disabled")
-            #
-            # def mango_onclickplus():
-            #     if self.current_num_mango < 15:
-            #         self.current_num_mango += 1
-            #         self.mango_quantity.configure(state="normal")
-            #         self.mango_quantity.delete(0, "end")
-            #         self.mango_quantity.insert(0, self.current_num_mango)
-            #         self.mango_quantity.configure(state="disabled")
-            #
-            # mango_img = ct.CTkImage(Im.open("images\\fruvegss\\mango_fixed.jpg"), size=(150, 150))
-            # mangoes_label = ct.CTkLabel(master=self.fru_frame, width=150, height=150, fg_color="#181818", text="",
-            #                             image=mango_img)
-            # mangoes_label.place(relx=xaxe, rely=0.19, anchor=tk.CENTER)
-            # mango_text = ct.CTkLabel(master=self.fru_frame, width=150, height=50, text="Mango\n₹40/kg", font=(font_style, 18),
-            #                          bg_color="#000000")
-            # mango_text.place(relx=xaxe, rely=0.38, anchor=tk.CENTER)
-            # mango_minus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="-", font=(font_style, 18),
-            #                            fg_color="#121212", hover_color="#FF2B2B", command=mango_onclickminus)
-            # mango_minus.place(relx=minus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # mango_plus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="+", font=(font_style, 18),
-            #                           fg_color="#121212", command=mango_onclickplus)
-            # mango_plus.place(relx=plus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # self.mango_quantity = ct.CTkEntry(master=self.fru_frame, width=65, height=40, state="disabled",
-            #                              justify="center", font=("normal", 24), border_width=0,
-            #                              corner_radius=0)
-            # self.mango_quantity.place(relx=text_box_placement_x, rely=0.47, anchor=tk.CENTER)
-            # xaxe += 0.19
-            # minus_placement_x += 0.19
-            # plus_placement_x += 0.19
-            # text_box_placement_x += 0.19
-            #
-            #
-            #
-            # self.current_num_grape = 0
-            #
-            # def grape_onclickminus():
-            #     if self.current_num_grape > 0:
-            #         self.current_num_grape -= 1
-            #         self.grape_quantity.configure(state="normal")
-            #         self.grape_quantity.delete(0, "end")
-            #         self.grape_quantity.insert(0, self.current_num_grape)
-            #         self.grape_quantity.configure(state="disabled")
-            #         if self.current_num_grape == 0:
-            #             self.grape_quantity.configure(state="normal")
-            #             self.grape_quantity.delete(0, "end")
-            #             self.grape_quantity.configure(state="disabled")
-            #
-            # def grape_onclickplus():
-            #     if self.current_num_grape < 15:
-            #         self.current_num_grape += 1
-            #         self.grape_quantity.configure(state="normal")
-            #         self.grape_quantity.delete(0, "end")
-            #         self.grape_quantity.insert(0, self.current_num_grape)
-            #         self.grape_quantity.configure(state="disabled")
-            #
-            # grape_img = ct.CTkImage(Im.open("images\\fruvegss\\grapes_fixed.png"), size=(150, 150))
-            # grape_text = ct.CTkLabel(master=self.fru_frame, width=150, height=50, text="Grapes\n₹20/kg", font=(font_style, 18),
-            #                          bg_color="#000000")
-            # grape_text.place(relx=xaxe, rely=0.38, anchor=tk.CENTER)
-            # grape_minus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="-", font=(font_style, 18),
-            #                            fg_color="#121212", hover_color="#FF2B2B", command=grape_onclickminus)
-            # grape_minus.place(relx=minus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # grape_plus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="+", font=(font_style, 18),
-            #                           fg_color="#121212", command=grape_onclickplus)
-            # grape_plus.place(relx=plus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # grape_label = ct.CTkLabel(master=self.fru_frame, width=150, height=150, fg_color="#181818", text="",
-            #                            image=grape_img)
-            # grape_label.place(relx=xaxe, rely=0.19, anchor=tk.CENTER)
-            # self.grape_quantity = ct.CTkEntry(master=self.fru_frame, width=65, height=40, state="disabled",
-            #                              justify="center", font=("normal", 24), border_width=0,
-            #                              corner_radius=0)
-            # self.grape_quantity.place(relx=text_box_placement_x, rely=0.47, anchor=tk.CENTER)
-            # xaxe += 0.19
-            # minus_placement_x += 0.19
-            # plus_placement_x += 0.19
-            # text_box_placement_x += 0.19
-            #
-            # self.current_num_banana = 0
-            #
-            # def banana_onclickminus():
-            #     if self.current_num_banana > 0:
-            #         self.current_num_banana -= 1
-            #         self.banana_quantity.configure(state="normal")
-            #         self.banana_quantity.delete(0, "end")
-            #         self.banana_quantity.insert(0, self.current_num_banana)
-            #         self.banana_quantity.configure(state="disabled")
-            #         if self.current_num_banana == 0:
-            #             self.banana_quantity.configure(state="normal")
-            #             self.banana_quantity.delete(0, "end")
-            #             self.banana_quantity.configure(state="disabled")
-            #
-            # def banana_onclickplus():
-            #     if self.current_num_banana < 15:
-            #         self.current_num_banana += 1
-            #         self.banana_quantity.configure(state="normal")
-            #         self.banana_quantity.delete(0, "end")
-            #         self.banana_quantity.insert(0, self.current_num_banana)
-            #         self.banana_quantity.configure(state="disabled")
-            #
-            # banana_img = ct.CTkImage(Im.open("images\\fruvegss\\banana_fixed.png"), size=(150, 150))
-            # banana_text = ct.CTkLabel(master=self.fru_frame, width=150, height=50, text="Banana\n₹70/kg",
-            #                           font=(font_style, 18),
-            #                           bg_color="#000000")
-            # banana_text.place(relx=xaxe, rely=0.38, anchor=tk.CENTER)
-            # banana_minus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="-", font=(font_style, 18),
-            #                             fg_color="#121212", hover_color="#FF2B2B", command=banana_onclickminus)
-            # banana_minus.place(relx=minus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # banana_plus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="+", font=(font_style, 18),
-            #                            fg_color="#121212", command=banana_onclickplus)
-            # banana_plus.place(relx=plus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # banana_label = ct.CTkLabel(master=self.fru_frame, width=150, height=150, fg_color="#181818", text="",
-            #                            image=banana_img)
-            # banana_label.place(relx=xaxe, rely=0.19, anchor=tk.CENTER)
-            # self.banana_quantity = ct.CTkEntry(master=self.fru_frame, width=65, height=40, state="disabled",
-            #                              justify="center", font=("normal", 24), border_width=0,
-            #                              corner_radius=0)
-            # self.banana_quantity.place(relx=text_box_placement_x, rely=0.47, anchor=tk.CENTER)
-            # xaxe += 0.19
-            # minus_placement_x += 0.19
-            # plus_placement_x += 0.19
-            # text_box_placement_x += 0.19
-            #
-            #
-            #
-            # self.current_num_apple = 0
-            #
-            # def apple_onclickminus():
-            #     if self.current_num_apple > 0:
-            #         self.current_num_apple -= 1
-            #         self.apple_quantity.configure(state="normal")
-            #         self.apple_quantity.delete(0, "end")
-            #         self.apple_quantity.insert(0, self.current_num_apple)
-            #         self.apple_quantity.configure(state="disabled")
-            #         if self.current_num_apple == 0:
-            #             self.apple_quantity.configure(state="normal")
-            #             self.apple_quantity.delete(0, "end")
-            #             self.apple_quantity.configure(state="disabled")
-            #
-            # def apple_onclickplus():
-            #     if self.current_num_apple < 15:
-            #         self.current_num_apple += 1
-            #         self.apple_quantity.configure(state="normal")
-            #         self.apple_quantity.delete(0, "end")
-            #         self.apple_quantity.insert(0, self.current_num_apple)
-            #         self.apple_quantity.configure(state="disabled")
-            #
-            # apple_img = ct.CTkImage(Im.open("images\\fruvegss\\apple_fixed.png"), size=(150, 150))
-            # apple_text = ct.CTkLabel(master=self.fru_frame, width=150, height=50, text="Apple\n₹35/kg",
-            #                          font=(font_style, 18),
-            #                          bg_color="#000000")
-            # apple_text.place(relx=xaxe, rely=0.38, anchor=tk.CENTER)
-            # apple_minus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="-", font=(font_style, 18),
-            #                            fg_color="#121212", hover_color="#FF2B2B", command=apple_onclickminus)
-            # apple_minus.place(relx=minus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # apple_plus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="+", font=(font_style, 18),
-            #                           fg_color="#121212", command=apple_onclickplus)
-            # apple_plus.place(relx=plus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # apple_label = ct.CTkLabel(master=self.fru_frame, width=150, height=150, fg_color="#181818", text="",
-            #                           image=apple_img)
-            # apple_label.place(relx=xaxe, rely=0.19, anchor=tk.CENTER)
-            # self.apple_quantity = ct.CTkEntry(master=self.fru_frame, width=65, height=40, state="disabled",
-            #                               justify="center", font=("normal", 24), border_width=0,
-            #                               corner_radius=0)
-            # self.apple_quantity.place(relx=text_box_placement_x, rely=0.47, anchor=tk.CENTER)
-            # xaxe += 0.19
-            # minus_placement_x += 0.19
-            # plus_placement_x += 0.19
-            # text_box_placement_x += 0.19
-            #
-            #
-            #
-            #
-            #
-            # self.current_num_orange = 0
-            #
-            # def orange_onclickminus():
-            #     if self.current_num_orange > 0:
-            #         self.current_num_orange -= 1
-            #         self.orange_quantity.configure(state="normal")
-            #         self.orange_quantity.delete(0, "end")
-            #         self.orange_quantity.insert(0, self.current_num_orange)
-            #         self.orange_quantity.configure(state="disabled")
-            #         if self.current_num_orange == 0:
-            #             self.orange_quantity.configure(state="normal")
-            #             self.orange_quantity.delete(0, "end")
-            #             self.orange_quantity.configure(state="disabled")
-            #
-            # def orange_onclickplus():
-            #     if self.current_num_orange < 15:
-            #         self.current_num_orange += 1
-            #         self.orange_quantity.configure(state="normal")
-            #         self.orange_quantity.delete(0, "end")
-            #         self.orange_quantity.insert(0, self.current_num_orange)
-            #         self.orange_quantity.configure(state="disabled")
-            #
-            # orange_img = ct.CTkImage(Im.open("images\\fruvegss\\orange_fixed.png"), size=(150, 150))
-            # orange_text = ct.CTkLabel(master=self.fru_frame, width=150, height=50, text="Orange\n₹80/kg",
-            #                           font=(font_style, 18),
-            #                           bg_color="#000000")
-            # orange_text.place(relx=xaxe, rely=0.38, anchor=tk.CENTER)
-            # orange_minus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="-", font=(font_style, 18),
-            #                             fg_color="#121212", hover_color="#FF2B2B", command=orange_onclickminus)
-            # orange_minus.place(relx=minus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # orange_plus = ct.CTkButton(master=self.fru_frame, width=35, height=40, text="+", font=(font_style, 18),
-            #                            fg_color="#121212", command=orange_onclickplus)
-            # orange_plus.place(relx=plus_placement_x, rely=0.47, anchor=tk.CENTER)
-            # orange_label = ct.CTkLabel(master=self.fru_frame, width=150, height=150, fg_color="#181818", text="",
-            #                            image=orange_img)
-            # orange_label.place(relx=xaxe, rely=0.19, anchor=tk.CENTER)
-            # self.orange_quantity = ct.CTkEntry(master=self.fru_frame, width=65, height=40, state="disabled",
-            #                              justify="center", font=("normal", 24), border_width=0,
-            #                              corner_radius=0)
-            # self.orange_quantity.place(relx=text_box_placement_x, rely=0.47, anchor=tk.CENTER)
 
         fru_veg_img = ct.CTkImage(Im.open("images\\fnl_fruvegs.png"), size=(240, 80))
         fru_veg = ct.CTkButton(master=left_frame_bot, width=250, height=70, corner_radius=10, text="",
@@ -1023,8 +843,10 @@ class Main(ct.CTk):
                                           bg_color="#000000")
             self.big_outer_frame.place(relx=0.339, rely=0.5, anchor=tk.CENTER)
 
-            self.indvidual_item_cart_frame = ct.CTkScrollableFrame(master=self.big_outer_frame, width=620, height=540, fg_color="#FFFFFF", corner_radius=0,
-                                          bg_color="#000000", scrollbar_fg_color="#FFFFFF", scrollbar_button_color="#FFFFFF")
+            self.indvidual_item_cart_frame = ct.CTkScrollableFrame(master=self.big_outer_frame, width=620, height=540,
+                                                                   fg_color="#FFFFFF", corner_radius=0,
+                                                                   bg_color="#000000", scrollbar_fg_color="#FFFFFF",
+                                                                   scrollbar_button_color="#FFFFFF")
             self.indvidual_item_cart_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
             # inner_frame = ct.CTkFrame(master=self.indvidual_item_cart_frame)
@@ -1111,6 +933,8 @@ class Main(ct.CTk):
             def minus():
                 pass
 
+            final_total.clear()
+
             for row_change, item in enumerate(info_dict):
                 item_name_label = ct.CTkLabel(master=self.indvidual_item_cart_frame,
                                               width=100, height=50, fg_color="#FFFFFF",
@@ -1134,7 +958,7 @@ class Main(ct.CTk):
                                                text_color="#000000", font=("Yu Gothic", 14))
                 item_total_label.grid(row=row_change+1, column=3, pady=5)
                 total_insert(item, row_change+1)
-            print(sum(final_total.values()))
+            # print(sum(final_total.values()))
 
             self.total_cart_frame = ct.CTkFrame(master=self.cart_frame, width=300, height=542, fg_color="#FAE8E5", corner_radius=0,
                                                 bg_color="#000000")
@@ -1148,6 +972,7 @@ class Main(ct.CTk):
                 for kz in list(final_total.keys()):
                     del final_total[kz]
 
+            print(final_total)
             ffff = sum(final_total.values())
             total_price_label = ct.CTkLabel(master=self.total_cart_frame, width=50, height=62,
                                             text=f"₹{ffff}", font=("Yu Gothic", 26), text_color="#000000")
@@ -1176,6 +1001,8 @@ class Main(ct.CTk):
         right_frame.place(relx=0.607, rely=0.5, anchor=tk.CENTER)
 
         # Search bar stuff
+
+
         search_bar = ct.CTkEntry(master=right_frame, width=760, height=40,
                                  corner_radius=30, border_color="#282828",
                                  placeholder_text="Search for any product!",
@@ -1189,25 +1016,7 @@ class Main(ct.CTk):
 
     # On open middle frame
 
-    # cart_img = ct.CTkImage(Im.open("images\\cart.png"), size=(240, 50))
-    # cart_btn = ct.CTkButton(master=left_frame_bot, width=240, height=50, corner_radius=0,
-    #                         text="", image=cart_img,
-    #                         fg_color="#363159", hover_color="#4950aa",
-    #                         border_spacing=0)
-    # cart_btn.place(relx=0.5, rely=0.96, anchor=tk.CENTER)
 
-    # veg_label = ct.CTkLabel(master=vegies, width=230, height=70, text="", image=vegies_img)
-    # veg_label.place(relx=0.2, rely=0.5, anchor=tk.CENTER)
-
-    #
-    # # 2st side tab
-    # fruits_img = ct.CTkImage(Im.open("images\\vegetables.png"), size=(45, 45))
-    # fruits = ct.CTkButton(master=left_frame, width=210, height=70, corner_radius=10,
-    #                       text="    Fruits     ", font=("Normal", 28), image=fruits_img,
-    #                       fg_color="#000000")
-    # fruits.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
-
-
-app = Main()
+app = App()
 mybackend = bk.Backend()
 app.mainloop()
