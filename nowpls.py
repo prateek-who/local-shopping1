@@ -4,7 +4,7 @@ import tkinter as tk
 from PIL import Image as Im
 import backendforact2 as bk
 
-what_is_your_name = ["Name", "Address", "Contact_no", "image", "order_history"]
+what_is_your_name = ["My_name", "My_address", "My_contact_no", "image", "order_history"]
 
 fruits = [
     {"name": "Mango", "image_path": "images\\fruvegss\\mango_fixed.jpg"},
