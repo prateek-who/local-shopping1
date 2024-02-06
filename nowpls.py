@@ -3,9 +3,50 @@ import customtkinter as ct
 import tkinter as tk
 from PIL import Image as Im
 import backendforact2 as bk
-import time
 
 what_is_your_name = ["Name", "Address", "Contact_no", "image", "order_history"]
+
+fruits = [
+    {"name": "Mango", "image_path": "images\\fruvegss\\mango_fixed.jpg"},
+    {"name": "Grape", "image_path": "images\\fruvegss\\grapes_fixed.png"},
+    {"name": "Banana", "image_path": "images\\fruvegss\\banana_fixed.png"},
+    {"name": "Apple", "image_path": "images\\fruvegss\\apple_fixed.png"},
+    {"name": "Orange", "image_path": "images\\fruvegss\\orange_fixed.png"}
+]
+
+meats_info = [
+    {"name": "Chicken", "image_path": "images\\meats\\chicken_fixed.png"},
+    {"name": "Mutton", "image_path": "images\\meats\\mutton_fixed.png"},
+    {"name": "Fish", "image_path": "images\\meats\\fish_fixed.png"},
+    {"name": "Shrimp", "image_path": "images\\meats\\shrimps_fixed.png"},
+    {"name": "Egg", "image_path": "images\\meats\\eggs_fixed.png"}
+]
+
+packed_foods_info = [
+    {"name": "Bourbon", "image_path": "images\\packaged_foods\\bourbon_fixed.png", },
+    {"name": "Dairy Milk", "image_path": "images\\packaged_foods\\dm_fixed.png", },
+    {"name": "Gulab Jamoon", "image_path": "images\\packaged_foods\\gj_fixed.png", },
+    {"name": "Tomato Soup", "image_path": "images\\packaged_foods\\ks_fixed.png", },
+    {"name": "Lays", "image_path": "images\\packaged_foods\\lays_fixed.png", }
+]
+
+home_products_info = [
+                {"name": "Soap", "image_path": "images\\home_essentials\\dove_fixed.png"},
+                {"name": "Hand Wash", "image_path": "images\\home_essentials\\handwash_fixed.png"},
+                {"name": "Paper Towel", "image_path": "images\\home_essentials\\paper_towels_fixed.png"},
+                {"name": "Toothpaste", "image_path": "images\\home_essentials\\toothpaste_fixed.png"},
+                {"name": "Paper Plate", "image_path": "images\\home_essentials\\paper_plates_fixed.png"}
+            ]
+
+
+makeup_info = [
+                {"name": "Blush", "image_path": "images\\makeup\\blu_fixed.png"},
+                {"name": "Foundation", "image_path": "images\\makeup\\foundation_fixed.png"},
+                {"name": "Lipstick", "image_path": "images\\makeup\\lipstick_fixed.png"},
+                {"name": "Mascara", "image_path": "images\\makeup\\mascara_fixed.png"},
+                {"name": "Perfume", "image_path": "images\\makeup\\perfume_fixed.png"}
+            ]
+
 
 class App(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -17,7 +58,7 @@ class App(ct.CTk):
     def login(self):
         self.geometry("400x600+100+200")
         self.resizable(False, False)
-        self.title("ABG")
+        self.title("ABG Login")
 
         logo_width = 300
         logo_height = 200
@@ -88,7 +129,7 @@ class Main(ct.CTk):
     def main(self):
         self.geometry("1200x600+100+200")
         self.resizable(False, False)
-        self.title("ABG")
+        self.title("ABG (All 'bout Groceries)")
 
         font_style = "Segoe UI"
         info_dict = {}
@@ -105,9 +146,31 @@ class Main(ct.CTk):
         left_frame_top.place(relx=0.108, rely=0.09, anchor=tk.CENTER)
 
         # Middle frame
-        midframe = ct.CTkFrame(master=self, width=930, height=542, fg_color="#FF12FF", corner_radius=10,
+        midframe = ct.CTkFrame(master=self, width=930, height=542, fg_color="#000000", corner_radius=10,
                                bg_color="#000000")
         midframe.place(relx=0.607, rely=0.537, anchor=tk.CENTER)
+
+        content_text = ("to ABG (All 'Bout Groceries). Products are divided into categories. "
+                        "Incase you are having a hard time finding a product, use the search bar. It will help you in pin-pointing where your desired product is! "
+                        "Hit the 'Add to cart button' to add all the products of a category to the cart. "
+                        "Once done, head to the cart and finish your shopping. Your items will be delivered to you in 30 mins!")
+        what_to_say = ("This is a project that I have been working on for quite a long time. It's finally somewhat finished! "
+                       "There will always be that little thought that says it could\nalways have been done a bit better. "
+                       "All feautures are finalized and I won't be adding anything more. Onto the next project now!")
+        credits_message = "Credits: Prateek, Arvind, Jude, KV, Harsh, Shubham"
+
+        welcome_label = ct.CTkLabel(master=midframe, width=500, height=100, text="WELCOME", text_color="#FFFFFF",
+                                    font=("Georgia", 80))
+        welcome_label.place(relx=0.5, rely=0.15, anchor=tk.CENTER)
+        middle_content_label = ct.CTkLabel(master=midframe, width=900, height=100, text=content_text, text_color="#FFFFFF",
+                                    font=("Georgia", 24), wraplength=900)
+        middle_content_label.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        credits_message_label = ct.CTkLabel(master=midframe, width=100, height=50, text=credits_message, text_color="#FFFFFF",
+                                    font=("Georgia", 22))
+        credits_message_label.place(relx=0.5, rely=0.87, anchor=tk.CENTER)
+        message_label = ct.CTkLabel(master=midframe, width=920, height=40, text=what_to_say, text_color="#FFFFFF", justify="left", anchor="w",
+                                    font=("Georgia", 12))
+        message_label.place(relx=0.5, rely=0.97, anchor=tk.CENTER)
 
         # profile stuff
         wid = 249
@@ -400,14 +463,6 @@ class Main(ct.CTk):
 
                 return current_num, entry
 
-            fruits = [
-                {"name": "Mango", "image_path": "images\\fruvegss\\mango_fixed.jpg"},
-                {"name": "Grape", "image_path": "images\\fruvegss\\grapes_fixed.png"},
-                {"name": "Banana", "image_path": "images\\fruvegss\\banana_fixed.png"},
-                {"name": "Apple", "image_path": "images\\fruvegss\\apple_fixed.png"},
-                {"name": "Orange", "image_path": "images\\fruvegss\\orange_fixed.png"}
-            ]
-
             # Create widgets for each fruit
             for fruit in fruits:
                 current_num, quantity_entry = create_fruit_widgets(fruit["name"], fruit["image_path"])
@@ -498,13 +553,6 @@ class Main(ct.CTk):
                 return current_num, entry
 
             # Define fruits
-            meats_info = [
-                {"name": "Chicken", "image_path": "images\\meats\\chicken_fixed.png"},
-                {"name": "Mutton", "image_path": "images\\meats\\mutton_fixed.png"},
-                {"name": "Fish", "image_path": "images\\meats\\fish_fixed.png"},
-                {"name": "Shrimp", "image_path": "images\\meats\\shrimps_fixed.png"},
-                {"name": "Egg", "image_path": "images\\meats\\eggs_fixed.png"}
-            ]
 
             # Create widgets for each fruit
             for meatss in meats_info:
@@ -595,14 +643,6 @@ class Main(ct.CTk):
                 update_quantity()
 
                 return current_num, entry
-
-            packed_foods_info = [
-                {"name": "Bourbon", "image_path": "images\\packaged_foods\\bourbon_fixed.png",},
-                {"name": "Dairy Milk", "image_path": "images\\packaged_foods\\dm_fixed.png",},
-                {"name": "Gulab Jamoon", "image_path": "images\\packaged_foods\\gj_fixed.png",},
-                {"name": "Tomato Soup", "image_path": "images\\packaged_foods\\ks_fixed.png",},
-                {"name": "Lays", "image_path": "images\\packaged_foods\\lays_fixed.png",}
-            ]
 
             # Create widgets for each fruit
             for foods in packed_foods_info:
@@ -697,14 +737,6 @@ class Main(ct.CTk):
                 update_quantity()
 
                 return current_num, entry
-
-            home_products_info = [
-                {"name": "Soap", "image_path": "images\\home_essentials\\dove_fixed.png"},
-                {"name": "Hand Wash", "image_path": "images\\home_essentials\\handwash_fixed.png"},
-                {"name": "Paper Towel", "image_path": "images\\home_essentials\\paper_towels_fixed.png"},
-                {"name": "Toothpaste", "image_path": "images\\home_essentials\\toothpaste_fixed.png"},
-                {"name": "Paper Plate", "image_path": "images\\home_essentials\\paper_plates_fixed.png"}
-            ]
 
             for product in home_products_info:
                 current_num, quantity_entry = create_home_essentials_widgets(product["name"], product["image_path"])
@@ -803,14 +835,6 @@ class Main(ct.CTk):
 
                 update_dict[packaged_name.lower()] = current_num
                 return current_num, entry
-
-            makeup_info = [
-                {"name": "Blush", "image_path": "images\\makeup\\blu_fixed.png"},
-                {"name": "Foundation", "image_path": "images\\makeup\\foundation_fixed.png"},
-                {"name": "Lipstick", "image_path": "images\\makeup\\lipstick_fixed.png"},
-                {"name": "Mascara", "image_path": "images\\makeup\\mascara_fixed.png"},
-                {"name": "Perfume", "image_path": "images\\makeup\\perfume_fixed.png"}
-            ]
 
             for makess in makeup_info:
                 current_num, quantity_entry = create_makeup_widgets(makess["name"], makess["image_path"])
@@ -927,12 +951,6 @@ class Main(ct.CTk):
                 item_total_label.configure(state="disabled")
                 final_total[item_num] = total
 
-            def plus():
-                pass
-
-            def minus():
-                pass
-
             final_total.clear()
 
             for row_change, item in enumerate(info_dict):
@@ -979,7 +997,7 @@ class Main(ct.CTk):
             total_price_label.place(relx=0.7, rely=0.2, anchor=tk.CENTER)
 
             bullshit_label = ct.CTkLabel(master=self.total_cart_frame, width=50, height=22,
-                                         text="*Shipping & taxes calculated at checkout",
+                                         text="*Delivery taxes calculated at checkout",
                                          font=("Century Gothic", 12), text_color="#000000")
             bullshit_label.place(relx=0.55, rely=0.25, anchor=tk.CENTER)
 
@@ -1001,20 +1019,36 @@ class Main(ct.CTk):
         right_frame.place(relx=0.607, rely=0.5, anchor=tk.CENTER)
 
         # Search bar stuff
+        def result_of_search(category, index):
+            txt = f"In {category}, position: {index+1}"
+            search_answer.configure(text=txt)
 
+        def search_for_stuff():
+            all_list = [fruits, meats_info, packed_foods_info, home_products_info, makeup_info]
+            categories = ["Fruits & Vegetables", "Meats", "Packaged Foods", "Home Essentials", "Makeup & Bodycare"]
+            stuff = search_bar.get()
+            if stuff != "":
+                for category, lst in zip(categories, all_list):
+                    for index, something in enumerate(lst):
+                        if something["name"].lower() == stuff.lower():
+                            result_of_search(category, index)
+            else:
+                search_answer.configure(text="")
 
-        search_bar = ct.CTkEntry(master=right_frame, width=760, height=40,
+        search_bar = ct.CTkEntry(master=right_frame, width=460, height=40,
                                  corner_radius=30, border_color="#282828",
-                                 placeholder_text="Search for any product!",
-                                 fg_color="#121212",
-                                 font=("Normal", 15))
-        search_bar.place(relx=0.819, rely=0.035, anchor=tk.E)
+                                 placeholder_text="Search for any product!", fg_color="#121212", font=("Normal", 15))
+        search_bar.place(relx=0.5, rely=0.035, anchor=tk.E)
+
+        search_answer = ct.CTkLabel(master=right_frame, width=290, height=40,
+                                    corner_radius=30, fg_color="#121212", text="", font=("Arial", 15))
+        search_answer.place(relx=0.835, rely=0.035, anchor=tk.CENTER)
+
         search_btn = ct.CTkButton(master=right_frame, width=150, height=40, corner_radius=30,
                                   text="Search", text_color="#FFFFFF", font=("Normal", 15),
-                                  fg_color="#121212", hover_color="#282828")
-        search_btn.place(relx=0.83, rely=0.035, anchor=tk.W)
-
-    # On open middle frame
+                                  fg_color="#121212", hover_color="#282828", command=search_for_stuff)
+        search_btn.place(relx=0.51, rely=0.035, anchor=tk.W)
+        self.bind("<Return>", lambda event: search_btn.invoke())
 
 
 app = App()
