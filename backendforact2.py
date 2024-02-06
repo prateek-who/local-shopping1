@@ -66,3 +66,37 @@ class Backend:
         database = "Items_list"
         collection = self.db[database]
         collection.insert_many(ins_dict)
+
+
+if __name__ == '__main__':
+    b = Backend()
+    # rezz, myid = b.login_check("Arvind", "rat")
+    # print(myid)
+    # --------------------------------------------------------------------------------
+    # Inserting products data
+    # iserting = [{"blush": 789}, {"foundation": 225}, {"mascara": 299}, {"perfume": 999}]
+    # b.inserting_item(iserting)
+
+    # ------------------------------------------------------------------------------
+    # Inserting image data for user
+    # uname = "Prateek"
+    # image_path = 'images/ast.jpg'
+    # with open(image_path, 'rb') as img_file:
+    #     binary_data = img_file.read()
+    #
+    # b.insert_user_img(uname, binary_data)
+
+    # ------------------------------------------------------------------------------
+    # Inserting all data for user
+
+    # uname = "Shubham"
+    # paswrd = "photo"
+    # image_path = 'images/hand_of_happiness.jpg'
+    #
+    # with open(image_path, 'rb') as image_file:
+    #     bn_data = image_file.read()
+    #
+    # b.insert_user_complete(uname, paswrd, bn_data)
+
+    # ------------------------------------------------------------------------------
+    # print(b.ask_profile_image("Prateek"))
