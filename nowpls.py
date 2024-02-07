@@ -135,6 +135,7 @@ class Main(ct.CTk):
         info_dict = {}
         final_total = {}
         update_dict = {}
+        checkout_dict = {}
 
         bottom_frame_color = "#000000"
         bottom_frame = ct.CTkFrame(master=self, width=1200, height=600, corner_radius=0,
@@ -922,12 +923,18 @@ class Main(ct.CTk):
             #                          text_color="#000000", font=("Yu Gothic", 14))
             # total_filler.grid(row=1, column=3)
 
+            self.temp_name = ["what"]
+            self.temp_price = 0
+            self.temp_qty = 0
+            self.temp_total = 0
+
             def price_insert(item_name, call):
                 price = mybackend.item_list(item_name)
                 item_price_label.configure(state="normal")
                 item_price_label.delete(0, "end")
                 item_price_label.insert(0, f"₹{price}")
                 item_price_label.configure(state="disabled")
+                self.temp_price = price
                 if call == "special":
                     return price
                 
@@ -939,6 +946,7 @@ class Main(ct.CTk):
                     item_qty_label.delete(0, "end")
                     item_qty_label.insert(0, quantity)
                     item_qty_label.configure(state="disabled")
+                    self.temp_qty = quantity
                     if call == "special":
                         return quantity
                 
@@ -950,14 +958,17 @@ class Main(ct.CTk):
                 item_total_label.insert(0, f"₹{total}")
                 item_total_label.configure(state="disabled")
                 final_total[item_num] = total
+                self.temp_total = total
 
             final_total.clear()
 
+            checkout_dict.clear()
             for row_change, item in enumerate(info_dict):
                 item_name_label = ct.CTkLabel(master=self.indvidual_item_cart_frame,
                                               width=100, height=50, fg_color="#FFFFFF",
                                               text=f"{item.capitalize()}", text_color="#000000", font=("Yu Gothic", 14))
                 item_name_label.grid(row=row_change+1, column=0, pady=5)
+                self.temp_name[0] = item.capitalize()
 
                 item_price_label = ct.CTkEntry(master=self.indvidual_item_cart_frame, border_width=0,
                                                width=100, height=50, fg_color="#FFFFFF", justify="center",
@@ -976,8 +987,12 @@ class Main(ct.CTk):
                                                text_color="#000000", font=("Yu Gothic", 14))
                 item_total_label.grid(row=row_change+1, column=3, pady=5)
                 total_insert(item, row_change+1)
+
+                checkout_dict.update({row_change: {"Item_name": self.temp_name, "price": self.temp_price, "quantity": self.temp_qty, "total": self.temp_total}})
+                print(row_change)
             # print(sum(final_total.values()))
 
+            print(checkout_dict)
             self.total_cart_frame = ct.CTkFrame(master=self.cart_frame, width=300, height=542, fg_color="#FAE8E5", corner_radius=0,
                                                 bg_color="#000000")
             self.total_cart_frame.place(relx=0.839, rely=0.5, anchor=tk.CENTER)
