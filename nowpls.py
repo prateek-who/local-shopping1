@@ -960,6 +960,9 @@ class Main(ct.CTk):
                 final_total[item_num] = total
                 self.temp_total = total
 
+            def order_placed():
+                pass
+
             final_total.clear()
 
             checkout_dict.clear()
@@ -1018,7 +1021,7 @@ class Main(ct.CTk):
 
             checkout_button = ct.CTkButton(master=self.total_cart_frame, width=170, height=55, corner_radius=30,
                                            text="CHECKOUT", font=("Yu Gothic", 14), hover_color="#282828",
-                                           text_color="#FFFFFF", fg_color="#000000")
+                                           text_color="#FFFFFF", fg_color="#000000", command=order_placed)
             checkout_button.place(relx=0.38, rely=0.45, anchor=tk.CENTER)
 
         cart_img = ct.CTkImage(Im.open("images\\cart_fnl.png"), size=(240, 40))
