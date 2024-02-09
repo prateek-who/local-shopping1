@@ -923,7 +923,6 @@ class Main(ct.CTk):
             #                          text_color="#000000", font=("Yu Gothic", 14))
             # total_filler.grid(row=1, column=3)
 
-            self.temp_name = ["what"]
             self.temp_price = 0
             self.temp_qty = 0
             self.temp_total = 0
@@ -960,8 +959,18 @@ class Main(ct.CTk):
                 final_total[item_num] = total
                 self.temp_total = total
 
+            def remove_text():
+                below_checkout_status.configure(fg_color="#FAE8E5")
+                below_checkout_status.configure(text="")
             def order_placed():
-                pass
+                rez = mybackend.insert_into_orderhistory(what_is_your_name[0], checkout_dict)
+                if rez:
+                    below_checkout_status.configure(fg_color="#007500")
+                    below_checkout_status.configure(text="Order placed successfully!")
+                    self.after(5000, remove_text)
+                else:
+                    below_checkout_status.configure(text="Error placing your order")
+
 
             final_total.clear()
 
@@ -971,7 +980,6 @@ class Main(ct.CTk):
                                               width=100, height=50, fg_color="#FFFFFF",
                                               text=f"{item.capitalize()}", text_color="#000000", font=("Yu Gothic", 14))
                 item_name_label.grid(row=row_change+1, column=0, pady=5)
-                self.temp_name[0] = item.capitalize()
 
                 item_price_label = ct.CTkEntry(master=self.indvidual_item_cart_frame, border_width=0,
                                                width=100, height=50, fg_color="#FFFFFF", justify="center",
@@ -991,9 +999,7 @@ class Main(ct.CTk):
                 item_total_label.grid(row=row_change+1, column=3, pady=5)
                 total_insert(item, row_change+1)
 
-                checkout_dict.update({row_change: {"Item_name": self.temp_name, "price": self.temp_price, "quantity": self.temp_qty, "total": self.temp_total}})
-                print(row_change)
-            # print(sum(final_total.values()))
+                checkout_dict.update({str(row_change): {"Item_name": item, "price": self.temp_price, "quantity": self.temp_qty, "total": self.temp_total}})
 
             print(checkout_dict)
             self.total_cart_frame = ct.CTkFrame(master=self.cart_frame, width=300, height=542, fg_color="#FAE8E5", corner_radius=0,
@@ -1023,6 +1029,9 @@ class Main(ct.CTk):
                                            text="CHECKOUT", font=("Yu Gothic", 14), hover_color="#282828",
                                            text_color="#FFFFFF", fg_color="#000000", command=order_placed)
             checkout_button.place(relx=0.38, rely=0.45, anchor=tk.CENTER)
+            below_checkout_status = ct.CTkLabel(master=self.total_cart_frame, width=250, height=50, corner_radius=0,
+                                                text="", font=("Century Gothic", 16), text_color="#000000")
+            below_checkout_status.place(relx=0.5, rely=0.7, anchor=tk.CENTER)
 
         cart_img = ct.CTkImage(Im.open("images\\cart_fnl.png"), size=(240, 40))
         cart_btn = ct.CTkButton(master=left_frame_bot, width=240, height=40, corner_radius=0,

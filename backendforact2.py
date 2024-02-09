@@ -67,9 +67,30 @@ class Backend:
         collection = self.db[database]
         collection.insert_many(ins_dict)
 
+    def insert_into_orderhistory(self, name, dict1):
+        database = "creds"
+        collection1 = self.db[database]
+
+        store_check = collection1.find_one({"User.Username": name})
+        compare_id = store_check.get("_id")
+
+        database = "order_history"
+        collection2 = self.db[database]
+        order_details = [dict1]
+
+        result = collection2.insert_many(order_details)
+
+        for identify in result.inserted_ids:
+            collection1.update_one({"_id": compare_id}, {"$push": {"User.Order_history": identify}})
+        return True
+
 
 if __name__ == '__main__':
     b = Backend()
+
+    # dict1 = {"0": {'Item_name': 'fish', 'price': 229, 'quantity': 3, 'total': 687}, "1": {'Item_name': 'paper towel', 'price': 195, 'quantity': 2, 'total': 390}, "2": {'Item_name': 'lipstick', 'price': 199, 'quantity': 1, 'total': 199}}
+    # b.insert_into_orderhistory("Arvind", dict1)
+
     # rezz, myid = b.login_check("Arvind", "rat")
     # print(myid)
     # --------------------------------------------------------------------------------
