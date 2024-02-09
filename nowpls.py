@@ -38,7 +38,6 @@ home_products_info = [
                 {"name": "Paper Plate", "image_path": "images\\home_essentials\\paper_plates_fixed.png"}
             ]
 
-
 makeup_info = [
                 {"name": "Blush", "image_path": "images\\makeup\\blu_fixed.png"},
                 {"name": "Foundation", "image_path": "images\\makeup\\foundation_fixed.png"},
