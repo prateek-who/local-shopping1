@@ -386,26 +386,6 @@ class Main(ct.CTk):
                                     bg_color="#000000")
             self.fru_frame.place(relx=0.607, rely=0.537, anchor=tk.CENTER)
 
-            # for name, image, price in zip(name_list, image_list, price_list):
-            #     imagelabel_dict[f"{name}_img"] = ct.CTkImage(Im.open(f"images\\fruvegss\\{image}"), size=(150, 150))
-            #     namelabel_dict[f"{name}_label"] = ct.CTkLabel(master=fru_frame, width=150, height=150, fg_color=bgcolor, text="", image=imagelabel_dict[f"{name}_img"])
-            #     namelabel_dict[f"{name}_label"].place(relx=xaxe, rely=0.19, anchor=tk.CENTER)
-            #     namelabel_dict[f"{name}_text"] = ct.CTkLabel(master=fru_frame, width=150, height=50, text=f"{name}\n₹{price}/kg", font=("Normal", 18),
-            #                          bg_color="#000000")
-            #     namelabel_dict[f"{name}_text"].place(relx=xaxe, rely=0.38, anchor=tk.CENTER)
-            #     namelabel_dict[f"{name}_minus"] = ct.CTkButton(master=fru_frame, width=35, height=40, text="-", font=("Normal", 18),
-            #                                fg_color="#121212", hover_color="#FF2B2B")
-            #     namelabel_dict[f"{name}_minus"].place(relx=minus_placement_x, rely=0.47, anchor=tk.CENTER)
-            #     namelabel_dict[f"{name}_plus"] = ct.CTkButton(master=fru_frame, width=35, height=40, text="+", font=("Normal", 18),
-            #                               fg_color="#121212", command=onclickplus)
-            #     namelabel_dict[f"{name}_plus"].place(relx=plus_placement_x, rely=0.47, anchor=tk.CENTER)
-            #     namelabel_dict[f"{name}_quantity"] = ct.CTkEntry(master=fru_frame, width=65, height=40, state="disabled", justify="center", font=("normal", 24))
-            #     namelabel_dict[f"{name}_quantity"].place(relx=text_box_placement_x, rely=0.47, anchor=tk.CENTER)
-            #     xaxe += 0.19
-            #     minus_placement_x += 0.19
-            #     plus_placement_x += 0.19
-            #     text_box_placement_x += 0.19
-
             def create_fruit_widgets(fruit_name, image_path):
                 current_num = 0
                 for key in info_dict:
@@ -872,9 +852,6 @@ class Main(ct.CTk):
                                                                    bg_color="#000000", scrollbar_fg_color="#FFFFFF",
                                                                    scrollbar_button_color="#FFFFFF")
             self.indvidual_item_cart_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-
-            # inner_frame = ct.CTkFrame(master=self.indvidual_item_cart_frame)
-            # inner_frame.pack(anchor="center")
 
             # All headings
             text_label = ["PRODUCT", "PRICE", "QTY", "TOTAL"]
