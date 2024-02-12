@@ -87,37 +87,3 @@ class Backend:
 
 if __name__ == '__main__':
     b = Backend()
-
-    # dict1 = {"0": {'Item_name': 'fish', 'price': 229, 'quantity': 3, 'total': 687}, "1": {'Item_name': 'paper towel', 'price': 195, 'quantity': 2, 'total': 390}, "2": {'Item_name': 'lipstick', 'price': 199, 'quantity': 1, 'total': 199}}
-    # b.insert_into_orderhistory("Arvind", dict1)
-
-    # rezz, myid = b.login_check("Arvind", "rat")
-    # print(myid)
-    # --------------------------------------------------------------------------------
-    # Inserting products data
-    # iserting = [{"blush": 789}, {"foundation": 225}, {"mascara": 299}, {"perfume": 999}]
-    # b.inserting_item(iserting)
-
-    # ------------------------------------------------------------------------------
-    # Inserting image data for user
-    # uname = "Prateek"
-    # image_path = 'images/ast.jpg'
-    # with open(image_path, 'rb') as img_file:
-    #     binary_data = img_file.read()
-    #
-    # b.insert_user_img(uname, binary_data)
-
-    # ------------------------------------------------------------------------------
-    # Inserting all data for user
-
-    # uname = "Shubham"
-    # paswrd = "photo"
-    # image_path = 'images/hand_of_happiness.jpg'
-    #
-    # with open(image_path, 'rb') as image_file:
-    #     bn_data = image_file.read()
-    #
-    # b.insert_user_complete(uname, paswrd, bn_data)
-
-    # ------------------------------------------------------------------------------
-    # print(b.ask_profile_image("Prateek"))
